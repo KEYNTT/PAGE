@@ -1,0 +1,9 @@
+{
+  "name": "instante",
+  "version": "1.0.0",
+  "description": "INSTANTE - Editor de fotos e imagenes",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  }
+}
