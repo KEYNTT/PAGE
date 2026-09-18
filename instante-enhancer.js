@@ -233,6 +233,67 @@
     setTimeout(() => { ensureHeroLogo(); cleanupHero(); }, 1500);
   }
 
+  // Intercept link clicks to ensure GitHub Pages (/PAGE/...) compatibility
+  document.addEventListener(
+    'click',
+    function (e) {
+      const a = e.target.closest('a');
+      if (!a) return;
+      const href = a.getAttribute('href');
+      if (!href) return;
+      if (
+        href.startsWith('http://') ||
+        href.startsWith('https://') ||
+        href.startsWith('#') ||
+        href.startsWith('mailto:') ||
+        href.startsWith('tel:') ||
+        href.startsWith('javascript:')
+      ) {
+        return;
+      }
+      if (a.target && a.target !== '_self') return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+
+      const basePath = window.location.pathname.startsWith('/PAGE') ? '/PAGE' : '';
+      let target = href;
+      if (target.startsWith('/PAGE')) {
+        target = target.slice(5);
+      }
+      if (!target.startsWith('/')) target = '/' + target;
+
+      let finalRoute = target;
+      if (target === '/' || target === '') finalRoute = '/';
+      else if (target.startsWith('/crop-image')) finalRoute = '/crop-image/';
+      else if (target.startsWith('/resize-image')) finalRoute = '/resize-image/';
+      else if (target.startsWith('/convert-to-webp')) finalRoute = '/convert-to-webp/';
+      else if (target.startsWith('/compress-image')) finalRoute = '/compress-image/';
+      else if (target.startsWith('/guides')) finalRoute = '/guides/';
+      else if (target.startsWith('/faq')) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.location.href = basePath + '/#faq';
+        return;
+      } else if (target.startsWith('/privacy')) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.location.href = basePath + '/guides/';
+        return;
+      } else {
+        return;
+      }
+
+      const destination = basePath + finalRoute;
+      const cur = window.location.pathname + (window.location.hash || '');
+      if (cur !== destination && cur !== destination.slice(0, -1)) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        window.location.href = destination;
+      }
+    },
+    true
+  );
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {

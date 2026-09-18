@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Redirigiendo... — INSTANTE</title>
+  <script>
+    (function() {
+      var path = window.location.pathname;
+      var known = ['crop-image', 'convert-to-webp', 'compress-image', 'resize-image', 'guides'];
+      for (var i = 0; i < known.length; i++) {
+        if (path.indexOf(known[i]) !== -1) {
+          var base = path.startsWith('/PAGE') ? '/PAGE' : '';
+          window.location.replace(base + '/' + known[i] + '/' + window.location.search + window.location.hash);
+          return;
+        }
+      }
+      var basePath = path.startsWith('/PAGE') ? '/PAGE/' : '/';
+      window.location.replace(basePath);
+    })();
+  </script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0f1f;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 3.5rem;
+      margin: 0 0 1rem 0;
+      background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p { color: #94a3b8; margin: 0 0 1.5rem 0; }
+    a {
+      display: inline-block;
+      padding: 10px 22px;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #f09433 0%, #dc2743 50%, #bc1888 100%);
+      color: #ffffff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>INSTANTE</h1>
+  <p>Redirigiendo a la página solicitada...</p>
+  <a href="/PAGE/">Volver al editor</a>
+</body>
+</html>
