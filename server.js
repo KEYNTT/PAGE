@@ -27,7 +27,15 @@ const MIME = {
 
 const server = http.createServer((req, res) => {
   let reqPath = decodeURI(req.url.split('?')[0]);
-  let filePath = path.join(__dirname, reqPath);
+  if (reqPath === '/PAGE') {
+    res.writeHead(301, { Location: '/PAGE/' });
+    return res.end();
+  }
+  let localPath = reqPath;
+  if (localPath.startsWith('/PAGE/')) {
+    localPath = localPath.substring(5);
+  }
+  let filePath = path.join(__dirname, localPath);
 
   // Check directory
   if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
@@ -62,7 +70,7 @@ const server = http.createServer((req, res) => {
     'Access-Control-Allow-Origin': '*'
   };
 
-  if (reqPath.startsWith('/_next/static/')) {
+  if (localPath.startsWith('/_next/static/')) {
     headers['Cache-Control'] = 'public, max-age=31536000, immutable';
   } else {
     headers['Cache-Control'] = 'no-cache, must-revalidate';

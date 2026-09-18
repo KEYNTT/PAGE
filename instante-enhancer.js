@@ -14,16 +14,28 @@
   // 2. Route title mapping
   const SPANISH_TITLES = {
     '/': 'INSTANTE — Editor de Imágenes Gratuito y 100% Privado Online',
+    '/PAGE': 'INSTANTE — Editor de Imágenes Gratuito y 100% Privado Online',
+    '/PAGE/': 'INSTANTE — Editor de Imágenes Gratuito y 100% Privado Online',
     '/crop-image': 'Recortar Imagen Online Gratis — INSTANTE',
     '/crop-image/': 'Recortar Imagen Online Gratis — INSTANTE',
+    '/PAGE/crop-image': 'Recortar Imagen Online Gratis — INSTANTE',
+    '/PAGE/crop-image/': 'Recortar Imagen Online Gratis — INSTANTE',
     '/resize-image': 'Redimensionar Imagen Online — INSTANTE',
     '/resize-image/': 'Redimensionar Imagen Online — INSTANTE',
+    '/PAGE/resize-image': 'Redimensionar Imagen Online — INSTANTE',
+    '/PAGE/resize-image/': 'Redimensionar Imagen Online — INSTANTE',
     '/convert-to-webp': 'Convertir a WebP Online — INSTANTE',
     '/convert-to-webp/': 'Convertir a WebP Online — INSTANTE',
+    '/PAGE/convert-to-webp': 'Convertir a WebP Online — INSTANTE',
+    '/PAGE/convert-to-webp/': 'Convertir a WebP Online — INSTANTE',
     '/compress-image': 'Comprimir Imágenes Online — INSTANTE',
     '/compress-image/': 'Comprimir Imágenes Online — INSTANTE',
+    '/PAGE/compress-image': 'Comprimir Imágenes Online — INSTANTE',
+    '/PAGE/compress-image/': 'Comprimir Imágenes Online — INSTANTE',
     '/guides': 'Guías de Edición y Optimización — INSTANTE',
-    '/guides/': 'Guías de Edición y Optimización — INSTANTE'
+    '/guides/': 'Guías de Edición y Optimización — INSTANTE',
+    '/PAGE/guides': 'Guías de Edición y Optimización — INSTANTE',
+    '/PAGE/guides/': 'Guías de Edición y Optimización — INSTANTE'
   };
 
   function getTitleForCurrentRoute() {
@@ -166,7 +178,7 @@
   }
 
   function ensureHeroLogo() {
-    const p = window.location.pathname;
+    const p = window.location.pathname.replace(/^\/PAGE/, '');
     if (p !== '/' && p !== '' && p !== '/index.html') return;
     if (document.getElementById('instante-hero-logo')) return;
     const heroH1 = document.querySelector('section.container.pt-10 h1');
@@ -175,9 +187,10 @@
     const banner = document.createElement('div');
     banner.id = 'instante-hero-logo';
     banner.className = 'mx-auto mb-6 flex justify-center';
+    const basePath = window.location.pathname.startsWith('/PAGE') ? '/PAGE' : '';
     banner.innerHTML = `
       <div class="relative overflow-hidden rounded-2xl border border-pink-500/25 bg-black/40 p-2 shadow-[0_0_35px_rgba(225,48,108,0.25)] backdrop-blur transition-transform duration-300 hover:scale-105">
-        <img src="/assets/logo-horizontal.jpg" alt="INSTANTE" class="h-16 sm:h-20 md:h-24 w-auto object-contain rounded-xl" />
+        <img src="${basePath}/assets/logo-horizontal.jpg" alt="INSTANTE" class="h-16 sm:h-20 md:h-24 w-auto object-contain rounded-xl" />
       </div>
     `;
     heroH1.parentElement.insertBefore(banner, heroH1);
